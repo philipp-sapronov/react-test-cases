@@ -5,12 +5,18 @@ import { render, screen } from '@testing-library/react';
 
 let onMount;
 let onUnmount;
+let title;
+let nextTitle;
 let key;
+let nextKey;
 
 beforeEach(() => {
   onMount = jest.fn();
   onUnmount = jest.fn();
-  key = 'some-key';
+  key = 'key';
+  nextKey = 'next-key';
+  key = 'Hello world';
+  nextKey = 'Hello React';
 });
 
 /**
@@ -22,125 +28,60 @@ beforeEach(() => {
  * @test
  */
 
-describe('Functional component', () => {
-  it('onMount callback works as expected', () => {
-    render(<FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-  });
-
-  it('onUnmount callback works as expected', () => {
-    const { unmount } = render(
-      <FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
-    );
-
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-    // unmount component via testing library api
-    unmount();
-    // onUnmount callback has been called
-    expect(onUnmount).toBeCalledTimes(1);
-  });
-
-  it('The component is remounted when the key changes', () => {
+describe('The component is remounted when the key changes', () => {
+  it('uses useEffect hook', () => {
     const { rerender } = render(
-      <FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
+      <FunctionalComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-    // onUnmount callback hasn't been called
-    expect(onUnmount).toBeCalledTimes(0);
-
-    // rerender component via testing library api
-    rerender(<FunctionalComponent _key={'some-new-key'} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component has been updated
+    rerender(
+      <FunctionalComponent _key={nextKey} title={title} onMount={onMount} onUnmount={onUnmount} />,
+    );
     expect(onMount).toBeCalledTimes(2);
     expect(onUnmount).toBeCalledTimes(1);
   });
 
-  it('The component is not remounted when the key remains the same', () => {
+  it('uses lifecycle methods', () => {
     const { rerender } = render(
-      <FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
+      <ClassComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-    // onUnmount callback hasn't been called
-    expect(onUnmount).toBeCalledTimes(0);
+    rerender(
+      <ClassComponent _key={nextKey} title={title} onMount={onMount} onUnmount={onUnmount} />,
+    );
 
-    // rerender component with the same key via testing library api
-    rerender(<FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component hasn't been remounted
-    expect(onMount).toBeCalledTimes(1);
-    expect(onUnmount).toBeCalledTimes(0);
+    expect(onMount).toBeCalledTimes(2);
+    expect(onUnmount).toBeCalledTimes(1);
   });
 });
 
-describe('Class component', () => {
-  it('onMount callback works as expected', () => {
-    render(<ClassComponent _key={key} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-  });
-
-  it('onUnmount callback works as expected', () => {
-    const { unmount } = render(
-      <ClassComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
-    );
-
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-    // unmount component via testing library api
-    unmount();
-    // onUnmount callback has been called
-    expect(onUnmount).toBeCalledTimes(1);
-  });
-
-  it('The component is remounted when the key changes', () => {
+/**
+ * @test
+ * Key remains the same but the title prop changes
+ */
+describe('Component is not remounted when the key remains the same', () => {
+  it('uses useEffect hook', () => {
     const { rerender } = render(
-      <FunctionalComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
+      <FunctionalComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
+    rerender(
+      <FunctionalComponent _key={key} title={nextTitle} onMount={onMount} onUnmount={onUnmount} />,
+    );
+
     expect(onMount).toBeCalledTimes(1);
-    // onUnmount callback hasn't been called
     expect(onUnmount).toBeCalledTimes(0);
-
-    // rerender component via testing library api
-    rerender(<FunctionalComponent _key={'some-new-key'} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component has been updated
-    expect(onMount).toBeCalledTimes(2);
-    expect(onUnmount).toBeCalledTimes(1);
   });
 
-  it('The component is not remounted when the key remains the same', () => {
+  it('uses lifecycle methods', () => {
     const { rerender } = render(
-      <ClassComponent _key={key} onMount={onMount} onUnmount={onUnmount} />,
+      <ClassComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
-    // Component has been mounted
-    expect(screen.getByText(/hallo world/i)).toBeInTheDocument();
-    expect(onMount).toBeCalledTimes(1);
-    // onUnmount callback hasn't been called
-    expect(onUnmount).toBeCalledTimes(0);
+    rerender(
+      <ClassComponent _key={key} title={nextTitle} onMount={onMount} onUnmount={onUnmount} />,
+    );
 
-    // rerender component with the same key via testing library api
-    rerender(<ClassComponent _key={key} onMount={onMount} onUnmount={onUnmount} />);
-
-    // Component hasn't been remounted
     expect(onMount).toBeCalledTimes(1);
     expect(onUnmount).toBeCalledTimes(0);
   });
