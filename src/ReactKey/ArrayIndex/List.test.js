@@ -66,16 +66,18 @@ it("No item should be unmounted", () => {
  */
 
 describe("Add a new item to the end of the list", () => {
+  const props = {};
+
+  beforeEach(() => {
+    props.list = list;
+    props.onItemMount = onItemMount;
+    props.onItemUnmount = onItemUnmount;
+    props.onItemReceiveNewProps = onItemReceiveNewProps;
+    props.onClick = (items) => pushItem(newItem, items);
+  });
+
   it("Component uses array indexes as keys", () => {
-    render(
-      <ListOfItemsWithIndexKeys
-        list={getList()}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={(items) => pushItem(newItem, items)}
-      />
-    );
+    render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Add Item
     userEvent.click(screen.getByRole("button"));
@@ -91,15 +93,7 @@ describe("Add a new item to the end of the list", () => {
   });
 
   it("Component uses unique ids as keys", () => {
-    render(
-      <ListOfItemsWithUniqueKeys
-        list={getList()}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={(items) => pushItem(newItem, items)}
-      />
-    );
+    render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Add Item
     userEvent.click(screen.getByRole("button"));
@@ -125,16 +119,18 @@ describe("Add a new item to the end of the list", () => {
  */
 
 describe("Add a new item to the top of the list", () => {
+  const props = {};
+
+  beforeEach(() => {
+    props.list = list;
+    props.onItemMount = onItemMount;
+    props.onItemUnmount = onItemUnmount;
+    props.onItemReceiveNewProps = onItemReceiveNewProps;
+    props.onClick = (items) => unshiftItem(newItem, items);
+  });
+
   it("Component uses array indexes as keys", () => {
-    render(
-      <ListOfItemsWithIndexKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={(items) => unshiftItem(newItem, items)}
-      />
-    );
+    render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Add Item
     userEvent.click(screen.getByRole("button"));
@@ -153,15 +149,7 @@ describe("Add a new item to the top of the list", () => {
   });
 
   it("Component uses unique ids as keys", () => {
-    render(
-      <ListOfItemsWithUniqueKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={(items) => unshiftItem(newItem, items)}
-      />
-    );
+    render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Add Item
     userEvent.click(screen.getByRole("button"));
@@ -189,16 +177,18 @@ describe("Add a new item to the top of the list", () => {
  */
 
 describe("Remove the last item from the list", () => {
+  const props = {};
+
+  beforeEach(() => {
+    props.list = list;
+    props.onItemMount = onItemMount;
+    props.onItemUnmount = onItemUnmount;
+    props.onItemReceiveNewProps = onItemReceiveNewProps;
+    props.onClick = popItem;
+  });
+
   it("Component uses array indexes as keys", () => {
-    render(
-      <ListOfItemsWithIndexKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={popItem}
-      />
-    );
+    render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Remove Item
     userEvent.click(screen.getByRole("button"));
@@ -212,15 +202,7 @@ describe("Remove the last item from the list", () => {
   });
 
   it("Component uses unique ids as keys", () => {
-    render(
-      <ListOfItemsWithUniqueKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={popItem}
-      />
-    );
+    render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Remove Item
     userEvent.click(screen.getByRole("button"));
@@ -244,60 +226,47 @@ describe("Remove the last item from the list", () => {
  */
 
 describe("Remove the first item from the list", () => {
+  const props = {};
+
+  beforeEach(() => {
+    props.list = list;
+    props.onItemMount = onItemMount;
+    props.onItemUnmount = onItemUnmount;
+    props.onItemReceiveNewProps = onItemReceiveNewProps;
+    props.onClick = shiftItem;
+  });
+
   it("Component uses array indexes as keys", () => {
-    render(
-      <ListOfItemsWithIndexKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={shiftItem}
-      />
-    );
+    render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Remove Item
     userEvent.click(screen.getByRole("button"));
-
     // Item has been removed from the list
     expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
-
     // The entire component list has been updated except deleted one
     expect(onItemReceiveNewProps).toBeCalledTimes(
       initialLength + (initialLength - 1)
     );
-
     // Although the item was removed from the top of the list the last item was unmounted
     expect(onItemUnmount).toBeCalledTimes(1);
     expect(onItemUnmount).toHaveBeenLastCalledWith(lastItem.name, lastItem.age);
   });
 
   it("Component uses unique ids as keys", () => {
-    render(
-      <ListOfItemsWithUniqueKeys
-        list={list}
-        onItemMount={onItemMount}
-        onItemUnmount={onItemUnmount}
-        onItemReceiveNewProps={onItemReceiveNewProps}
-        onClick={shiftItem}
-      />
-    );
+    render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Remove Item
     userEvent.click(screen.getByRole("button"));
-
     // Item has been removed from the list
     expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
-
     // No component has been updated as expected
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
-
     // Only first component has been deleted
     expect(onItemUnmount).toBeCalledTimes(1);
     expect(onItemUnmount).toHaveBeenLastCalledWith(
       firstItem.name,
       firstItem.age
     );
-
     // No component has been updated
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
   });
