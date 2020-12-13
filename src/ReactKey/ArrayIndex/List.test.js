@@ -42,18 +42,10 @@ it("Should be mounted all items in the list", () => {
     />
   );
 
-  // components were mount
+  // Components have been mounted
   expect(onItemMount).toBeCalledTimes(list.length);
   expect(onItemReceiveNewProps).toBeCalledTimes(list.length);
-});
-
-it("No item should be unmounted", () => {
-  render(
-    <ListOfItemsWithIndexKeys list={list} onItemUnmount={onItemUnmount} />
-  );
-
-  // components still weren't unmount
-  expect(onItemUnmount).toBeCalledTimes(0);
+  expect(screen.getAllByRole("listitem")).toHaveLength(initialLength);
 });
 
 /**
@@ -271,5 +263,3 @@ describe("Remove the first item from the list", () => {
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
   });
 });
-
-
