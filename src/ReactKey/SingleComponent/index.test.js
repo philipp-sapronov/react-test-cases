@@ -74,7 +74,7 @@ describe('Component is not remounted when the key remains the same', () => {
   });
 
   it('uses lifecycle methods', () => {
-    const { rerender, debug } = render(
+    const { rerender } = render(
       <ClassComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
