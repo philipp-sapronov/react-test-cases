@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const fn = () => {};
 
-const Item = ({
-  name,
-  age,
-  onMount = fn,
-  onUnmount = fn,
-  onReceiveNewProps = fn,
-}) => {
+const Item = ({ name, age, onMount = fn, onUnmount = fn, onReceiveNewProps = fn }) => {
   useEffect(() => {
     onMount(name, age);
     return () => onUnmount(name, age);

@@ -9,15 +9,15 @@ class Item {
 }
 
 export const getList = () => [
-  new Item("Barbara", 20, "ax"),
-  new Item("John", 30, "bx"),
-  new Item("Jenifer", 25, "cx"),
-  new Item("Paul", 29, "dx"),
-  new Item("Stephan", 16, "ex"),
-  new Item("Monika", 34, "fx"),
+  new Item('Barbara', 20, 'ax'),
+  new Item('John', 30, 'bx'),
+  new Item('Jenifer', 25, 'cx'),
+  new Item('Paul', 29, 'dx'),
+  new Item('Stephan', 16, 'ex'),
+  new Item('Monika', 34, 'fx'),
 ];
 
-export const getTestItem = () => new Item("Bob", 30, "gx");
+export const getTestItem = () => new Item('Bob', 30, 'gx');
 
 export const unshiftItem = (item, items) => [item, ...items];
 export const pushItem = (item, items) => [...items, item];

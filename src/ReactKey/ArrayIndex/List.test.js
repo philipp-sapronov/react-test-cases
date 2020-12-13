@@ -1,17 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { ListOfItemsWithIndexKeys, ListOfItemsWithUniqueKeys } from "./";
-import {
-  getList,
-  unshiftItem,
-  pushItem,
-  shiftItem,
-  popItem,
-  getTestItem,
-} from "./mocks";
+import { ListOfItemsWithIndexKeys, ListOfItemsWithUniqueKeys } from './';
+import { getList, unshiftItem, pushItem, shiftItem, popItem, getTestItem } from './mocks';
 
 let list;
 let onItemMount;
@@ -33,19 +26,19 @@ beforeEach(() => {
   newItem = getTestItem();
 });
 
-it("Should be mounted all items in the list", () => {
+it('Should be mounted all items in the list', () => {
   render(
     <ListOfItemsWithIndexKeys
       list={list}
       onItemMount={onItemMount}
       onItemReceiveNewProps={onItemReceiveNewProps}
-    />
+    />,
   );
 
   // Components have been mounted
   expect(onItemMount).toBeCalledTimes(initialLength);
   expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
-  expect(screen.getAllByRole("listitem")).toHaveLength(initialLength);
+  expect(screen.getAllByRole('listitem')).toHaveLength(initialLength);
 });
 
 /**
@@ -57,7 +50,7 @@ it("Should be mounted all items in the list", () => {
  * @test
  */
 
-describe("Add a new item to the end of the list", () => {
+describe('Add a new item to the end of the list', () => {
   const props = {};
 
   beforeEach(() => {
@@ -68,13 +61,13 @@ describe("Add a new item to the end of the list", () => {
     props.onClick = (items) => pushItem(newItem, items);
   });
 
-  it("Component uses array indexes as keys", () => {
+  it('Component uses array indexes as keys', () => {
     render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Add Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // There is +1 new item in the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength + 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength + 1);
     // The new component (newItem) has been mounted
     expect(onItemMount).toBeCalledTimes(initialLength + 1);
     expect(onItemMount).toHaveBeenLastCalledWith(newItem.name, newItem.age);
@@ -84,13 +77,13 @@ describe("Add a new item to the end of the list", () => {
     expect(onItemUnmount).toBeCalledTimes(0);
   });
 
-  it("Component uses unique ids as keys", () => {
+  it('Component uses unique ids as keys', () => {
     render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Add Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // There is +1 new item in the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength + 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength + 1);
     // The new component (newItem) has been mounted
     expect(onItemMount).toBeCalledTimes(initialLength + 1);
     expect(onItemMount).toHaveBeenLastCalledWith(newItem.name, newItem.age);
@@ -110,7 +103,7 @@ describe("Add a new item to the end of the list", () => {
  * @test
  */
 
-describe("Add a new item to the top of the list", () => {
+describe('Add a new item to the top of the list', () => {
   const props = {};
 
   beforeEach(() => {
@@ -121,32 +114,30 @@ describe("Add a new item to the top of the list", () => {
     props.onClick = (items) => unshiftItem(newItem, items);
   });
 
-  it("Component uses array indexes as keys", () => {
+  it('Component uses array indexes as keys', () => {
     render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Add Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // There is +1 new item in the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength + 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength + 1);
     // The new component has been mounted
     expect(onItemMount).toBeCalledTimes(initialLength + 1);
     // Although the item was added to the top of the list the last item was mounted
     expect(onItemMount).toHaveBeenLastCalledWith(lastItem.name, lastItem.age);
     // The entire component list has been updated plus a new component
-    expect(onItemReceiveNewProps).toBeCalledTimes(
-      initialLength + initialLength + 1
-    );
+    expect(onItemReceiveNewProps).toBeCalledTimes(initialLength + initialLength + 1);
     // Components haven't been unmounted
     expect(onItemUnmount).toBeCalledTimes(0);
   });
 
-  it("Component uses unique ids as keys", () => {
+  it('Component uses unique ids as keys', () => {
     render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Add Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // There is +1 new item in the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength + 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength + 1);
     // The new component (newItem) has been mounted
     expect(onItemMount).toBeCalledTimes(initialLength + 1);
     // The first element was mounted as expected
@@ -168,7 +159,7 @@ describe("Add a new item to the top of the list", () => {
  * @test
  */
 
-describe("Remove the last item from the list", () => {
+describe('Remove the last item from the list', () => {
   const props = {};
 
   beforeEach(() => {
@@ -179,13 +170,13 @@ describe("Remove the last item from the list", () => {
     props.onClick = popItem;
   });
 
-  it("Component uses array indexes as keys", () => {
+  it('Component uses array indexes as keys', () => {
     render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Remove Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // Item has been removed from the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength - 1);
     // No component has been updated
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
     // The last item has been unmounted
@@ -193,13 +184,13 @@ describe("Remove the last item from the list", () => {
     expect(onItemUnmount).toHaveBeenLastCalledWith(lastItem.name, lastItem.age);
   });
 
-  it("Component uses unique ids as keys", () => {
+  it('Component uses unique ids as keys', () => {
     render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Remove Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // Item has been removed from the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength - 1);
     // No component has been updated
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
     // The last item has been unmounted
@@ -217,7 +208,7 @@ describe("Remove the last item from the list", () => {
  * @test
  */
 
-describe("Remove the first item from the list", () => {
+describe('Remove the first item from the list', () => {
   const props = {};
 
   beforeEach(() => {
@@ -228,37 +219,32 @@ describe("Remove the first item from the list", () => {
     props.onClick = shiftItem;
   });
 
-  it("Component uses array indexes as keys", () => {
+  it('Component uses array indexes as keys', () => {
     render(<ListOfItemsWithIndexKeys {...props} />);
 
     // Remove Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // Item has been removed from the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength - 1);
     // The entire component list has been updated except deleted one
-    expect(onItemReceiveNewProps).toBeCalledTimes(
-      initialLength + (initialLength - 1)
-    );
+    expect(onItemReceiveNewProps).toBeCalledTimes(initialLength + (initialLength - 1));
     // Although the item was removed from the top of the list the last item was unmounted
     expect(onItemUnmount).toBeCalledTimes(1);
     expect(onItemUnmount).toHaveBeenLastCalledWith(lastItem.name, lastItem.age);
   });
 
-  it("Component uses unique ids as keys", () => {
+  it('Component uses unique ids as keys', () => {
     render(<ListOfItemsWithUniqueKeys {...props} />);
 
     // Remove Item
-    userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole('button'));
     // Item has been removed from the list
-    expect(screen.getAllByRole("listitem")).toHaveLength(initialLength - 1);
+    expect(screen.getAllByRole('listitem')).toHaveLength(initialLength - 1);
     // No component has been updated as expected
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
     // Only first component has been deleted
     expect(onItemUnmount).toBeCalledTimes(1);
-    expect(onItemUnmount).toHaveBeenLastCalledWith(
-      firstItem.name,
-      firstItem.age
-    );
+    expect(onItemUnmount).toHaveBeenLastCalledWith(firstItem.name, firstItem.age);
     // No component has been updated
     expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
   });
