@@ -43,8 +43,8 @@ it("Should be mounted all items in the list", () => {
   );
 
   // Components have been mounted
-  expect(onItemMount).toBeCalledTimes(list.length);
-  expect(onItemReceiveNewProps).toBeCalledTimes(list.length);
+  expect(onItemMount).toBeCalledTimes(initialLength);
+  expect(onItemReceiveNewProps).toBeCalledTimes(initialLength);
   expect(screen.getAllByRole("listitem")).toHaveLength(initialLength);
 });
 
