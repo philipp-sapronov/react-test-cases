@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FunctionalComponent, ClassComponent } from './';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 let onMount;
 let onUnmount;
@@ -15,8 +15,8 @@ beforeEach(() => {
   onUnmount = jest.fn();
   key = 'key';
   nextKey = 'next-key';
-  key = 'Hello world';
-  nextKey = 'Hello React';
+  title = 'Hello world';
+  nextTitle = 'Hello React';
 });
 
 /**
@@ -74,7 +74,7 @@ describe('Component is not remounted when the key remains the same', () => {
   });
 
   it('uses lifecycle methods', () => {
-    const { rerender } = render(
+    const { rerender, debug } = render(
       <ClassComponent _key={key} title={title} onMount={onMount} onUnmount={onUnmount} />,
     );
 
