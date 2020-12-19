@@ -21,7 +21,7 @@ describe('How component mounts after redirect', () => {
     expect(onUnmount).toBeCalledTimes(0);
   });
 
-  it('should be unmounted', () => {
+  it('should be mounted and then should be unmounted', () => {
     render(<App onMount={onMount} onUnmount={onUnmount} shouldRedirect={true} />);
 
     expect(screen.queryByText('page')).not.toBeInTheDocument();
