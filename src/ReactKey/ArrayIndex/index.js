@@ -1,1 +1,5 @@
-export { ListOfItemsWithIndexKeys, ListOfItemsWithUniqueKeys } from './List';
+export {
+  ListOfItemsWithIndexKeys,
+  ListOfItemsWithUniqueKeys,
+  ChangeStateWithSetTimeout,
+} from './List';
